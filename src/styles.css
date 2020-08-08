@@ -207,3 +207,10 @@ img {
 .Button:focus {
  background-color: #303f9f;
 }
+
+.notif {
+ text-align: center;
+ padding-bottom: 30px;
+ font-size: 50px;
+ margin: 0;
+}

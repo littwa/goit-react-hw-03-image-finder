@@ -11,6 +11,7 @@ class App extends React.Component {
   openModal: false,
   loading: false,
   error: false,
+  noImages: false,
   InfiniteScroll: true,
   query: "",
   images: [],
@@ -66,7 +67,9 @@ class App extends React.Component {
      webformatURL: el.webformatURL,
      largeImageURL: el.largeImageURL
     }));
-
+    if (arrImg.length === 0) {
+     this.setState({ noImages: true });
+    }
     this.setState(prevState => ({
      images: [...prevState.images, ...arrImg],
      pageNumbear: (prevState.pageNumbear += 1)
@@ -78,7 +81,7 @@ class App extends React.Component {
 
  forSubmitSearchbar = value => {
   if (this.state.query !== value) {
-   this.setState({ query: value, images: [], pageNumbear: 1 });
+   this.setState({ query: value, images: [], pageNumbear: 1, noImages: false });
   }
  };
 
@@ -91,13 +94,16 @@ class App extends React.Component {
    <>
     <Searchbar onInfiniteScroll={this.onInfiniteScroll} forSubmitSearchbar={this.forSubmitSearchbar} />
     {this.state.images.length > 0 && <ImageGallery modal={this.openModalToggle} images={this.state.images} />}
-    {this.state.images.length > 0 && !this.state.loading && !this.state.InfiniteScroll && (
-     <Button fetchImgAPI={this.fetchImgAPI} />
-    )}
+    {this.state.images.length > 0 &&
+     !this.state.loading &&
+     !this.state.InfiniteScroll &&
+     !this.state.noImages && <Button fetchImgAPI={this.fetchImgAPI} />}
     {this.state.loading && (
      <Loader type="ThreeDots" color="#3f51b5" height={80} width={document.documentElement.clientWidth} />
     )}
-    {this.state.error && <p>Error, try again later</p>}
+    {this.state.error && <p className={"notif"}>Error, try again later</p>}
+    {this.state.noImages && <p className={"notif"}> No Images!!!</p>}
+
     {this.state.openModal && (
      <Modal closeModal={this.openModalToggle} large={this.state.largeImageForModal} />
     )}
