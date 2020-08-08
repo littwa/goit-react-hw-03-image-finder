@@ -1,30 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Overlay, ModalStyle } from "./Modal.module.css";
 
 class Modal extends React.Component {
  static propTypes = { closeModal: PropTypes.func.isRequired, large: PropTypes.string };
 
  componentDidMount() {
-  window.addEventListener("keydown", this.closeCallback);
+  document.querySelector('[tabindex="0"]').focus();
  }
- componentWillUnmount() {
-  window.removeEventListener("keydown", this.closeCallback);
- }
- closeCallback = e => {
-  if (e.key === "Escape") {
-   this.props.closeModal();
-  }
- };
 
  render() {
   return (
    <div
-    onClick={e => {
-     e.target.nodeName !== "IMG" && this.props.closeModal();
-    }}
-    className="Overlay"
+    onClick={e => e.target.nodeName !== "IMG" && this.props.closeModal()}
+    onKeyDown={e => e.key === "Escape" && this.props.closeModal()}
+    className={Overlay}
+    tabIndex="0"
    >
-    <div className="Modal">
+    <div className={ModalStyle}>
      <img src={this.props.large} alt="pic" />
     </div>
    </div>

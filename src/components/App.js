@@ -1,10 +1,12 @@
 import React from "react";
 import Searchbar from "./Searchbar/Searchbar";
-import FetchImages from "./FetchImages/FetchImages";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Button from "./Button/Button";
-import Loader from "react-loader-spinner";
 import Modal from "./Modal/Modal";
+// //Services
+import FetchImages from "./FetchImages/FetchImages";
+// //Styles
+import Loader from "react-loader-spinner";
 
 class App extends React.Component {
  state = {
@@ -12,7 +14,6 @@ class App extends React.Component {
   loading: false,
   error: false,
   noImages: false,
-  InfiniteScroll: true,
   query: "",
   images: [],
   pageNumbear: 1,
@@ -25,10 +26,6 @@ class App extends React.Component {
  }
 
  componentDidUpdate(prevProps, prevState, snapshot) {
-  //================IntersectionObserver===================================================
-  let specDiv = document.querySelector(".divForIntersectionObserver");
-  specDiv && this.state.InfiniteScroll && this.observer.observe(specDiv);
-  //=======================================================================================
   if (prevState.query !== this.state.query) {
    this.fetchImgAPI();
   }
@@ -40,21 +37,6 @@ class App extends React.Component {
    });
   }
  }
-
- //===================IntersectionObserver===================================================
- options = {
-  rootMargin: "50px",
-  threshold: 0.5
- };
- onEntry = (entries, observer) => {
-  entries.forEach(entry => {
-   entry.isIntersecting && this.fetchImgAPI();
-  });
- };
- observer = new IntersectionObserver(this.onEntry, this.options);
-
- onInfiniteScroll = value => this.setState({ InfiniteScroll: value });
- //===============================================================================
 
  fetchImgAPI = () => {
   this.setState({ loading: true });
@@ -92,12 +74,11 @@ class App extends React.Component {
  render() {
   return (
    <>
-    <Searchbar onInfiniteScroll={this.onInfiniteScroll} forSubmitSearchbar={this.forSubmitSearchbar} />
+    <Searchbar forSubmitSearchbar={this.forSubmitSearchbar} />
     {this.state.images.length > 0 && <ImageGallery modal={this.openModalToggle} images={this.state.images} />}
-    {this.state.images.length > 0 &&
-     !this.state.loading &&
-     !this.state.InfiniteScroll &&
-     !this.state.noImages && <Button fetchImgAPI={this.fetchImgAPI} />}
+    {this.state.images.length > 0 && !this.state.loading && !this.state.noImages && (
+     <Button fetchImgAPI={this.fetchImgAPI} />
+    )}
     {this.state.loading && (
      <Loader type="ThreeDots" color="#3f51b5" height={80} width={document.documentElement.clientWidth} />
     )}

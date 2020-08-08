@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import style from "./ImageGalleryItem.module.css";
 
 const ImageGalleryItem = ({ webformatURL, largeImageURL, modal }) => {
  return (
@@ -7,9 +8,9 @@ const ImageGalleryItem = ({ webformatURL, largeImageURL, modal }) => {
    onClick={() => {
     modal(largeImageURL);
    }}
-   className="ImageGalleryItem"
+   className={style.ImageGalleryItem}
   >
-   <img src={webformatURL} alt="pic" className="ImageGalleryItem-image" />
+   <img src={webformatURL} alt="pic" className={style.ImageGalleryItemImage} />
   </li>
  );
 };
