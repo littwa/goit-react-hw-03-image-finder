@@ -21,9 +21,9 @@ class App extends React.Component {
   largeImageForModal: undefined
  };
 
- getSnapshotBeforeUpdate(prevProps, prevState) {
-  return document.documentElement.scrollHeight - 160;
- }
+ //  getSnapshotBeforeUpdate(prevProps, prevState) {
+ //   return document.documentElement.scrollHeight - 160;
+ //  }
 
  componentDidUpdate(prevProps, prevState, snapshot) {
   if (prevState.query !== this.state.query) {
@@ -32,7 +32,7 @@ class App extends React.Component {
 
   if (prevState.images.length !== this.state.images.length && prevState.images.length > 0) {
    window.scrollTo({
-    top: snapshot,
+    top: document.documentElement.scrollHeight,
     behavior: "smooth"
    });
   }
